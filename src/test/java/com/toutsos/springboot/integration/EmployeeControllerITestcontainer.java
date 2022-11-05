@@ -14,9 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +23,21 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 // with this annotation spring creates a new context and copies all beans at this in order to be used for integration testing
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Testcontainers
-public class EmployeeControllerITestcontainer {
+//@Testcontainers this annotation not need anymore because we manually start container from AbstractionBaseTest.class
+public class EmployeeControllerITestcontainer  extends AbstractContainerBaseTest {
 
     //static in order to create container once and used from all tests
-    @Container
-    private static MySQLContainer mySQLContainer = new MySQLContainer("mysql:latest");
+//    @Container
+//    private static MySQLContainer mySQLContainer = new MySQLContainer("mysql:latest");
+
+    //In order to create an instance of this MySql container for other tests too
+    // and put it in application context
+//    @DynamicPropertySource
+//    public static void dynamicPropertySource(DynamicPropertyRegistry registry){
+//        registry.add("spring.datasource.url",mySQLContainer::getJdbcUrl);
+//        registry.add("spring.datasource.username",mySQLContainer::getUsername);
+//        registry.add("spring.datasource.password",mySQLContainer::getPassword);
+//    }
 
     //used to make HTTP requests
     @Autowired
@@ -50,7 +56,6 @@ public class EmployeeControllerITestcontainer {
 
     @Test
     public void givenEmployeeObj_whenCreateEmployee_thenReturnSavedEmployee() throws Exception{
-        System.out.println(mySQLContainer.getJdbcUrl());
         // given - precondition
         Employee employee = Employee.builder()
                 .firstName("Angelos")

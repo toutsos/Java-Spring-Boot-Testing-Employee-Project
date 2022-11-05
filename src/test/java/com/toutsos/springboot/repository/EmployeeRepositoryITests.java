@@ -1,12 +1,12 @@
 package com.toutsos.springboot.repository;
 
+import com.toutsos.springboot.integration.AbstractContainerBaseTest;
 import com.toutsos.springboot.model.Employee;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 // disable IN memory support in order to test MySql integration
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class EmployeeRepositoryITests {
+//class extended in order to use docker container instead of local mySql
+public class EmployeeRepositoryITests extends AbstractContainerBaseTest {
 
     @Autowired
     private EmployeeRepository employeeRepository;
